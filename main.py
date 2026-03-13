@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from auth_router import router
 
 app = FastAPI()
+app.include_router(router)
 
 # 개발서버 cors 허용
 origins = [
@@ -23,4 +25,5 @@ def hello():
   return {"message": "hello"}
 
 # static
-app.mount("/", StaticFiles(directory="dist", html=True), name="static")
+if os.path.exists("dist"):
+    app.mount("/", StaticFiles(directory="dist", html=True), name="static")
